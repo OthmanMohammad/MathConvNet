@@ -1,6 +1,6 @@
 # Convolutional Neural Network from Scratch
 
-This project is a fundamental and mathematical implementation of a Convolutional Neural Network (CNN) from scratch using NumPy. It encompasses all core components of a standard neural network, including forward and backward propagation, convolutional and pooling layers, fully connected layers, and activation functions. The implementation uses the principles of linear algebra, calculus, and statistics, providing a deep insight into the underpinning mechanics of machine learning models. This project serves as a practical and educational resource for understanding the computational and mathematical complexities involved in a CNN.
+This project is a fundamental and mathematical implementation of a Convolutional Neural Network (CNN) from scratch using NumPy. It encompasses all core components of a standard neural network, including forward and backward propagation, convolutional and pooling layers, fully connected layers, and activation functions. The implementation uses the principles of linear algebra, calculus, and statistics, providing a deep insight into the underpinning mechanics of deep learning models. This project serves as a practical and educational resource for understanding the computational and mathematical complexities involved in a CNN.
 ## Getting Started
 
 Just run the `main.py` script. It will train a CNN model on a binary classification problem and print the cost after each 100 epochs and the final accuracy of the model.

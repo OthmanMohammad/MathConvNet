@@ -198,3 +198,72 @@ class PoolLayer(Layer):
                         dA_prev[i, vert_start:vert_end, horiz_start:horiz_end, c] += np.multiply(mask, dA[i, h, w, c])
 
         return dA_prev
+    
+class FCLayer(Layer):
+    """
+    This class defines a fully connected layer.
+    It inherits from the abstract base class "Layer".
+    """
+    def __init__(self, input_shape, output_shape, activation_func):
+        self.input_shape = input_shape
+        self.output_shape = output_shape
+        self.activation_func = activation_func
+        self.W = np.random.randn(output_shape, input_shape) * 0.01
+        self.b = np.zeros((output_shape, 1))
+
+    def forward(self, A_prev):
+        """
+        Implements the forward propagation for a fully connected layer
+
+        Arguments:
+        A_prev -- activations from previous layer (or input data): (size of previous layer, number of examples)
+
+        Returns:
+        A -- the output of the activation function, also called the post-activation value 
+        cache -- a python dictionary containing "linear_cache" and "activation_cache";
+                 stored for computing the backward pass efficiently
+        """
+
+        Z = np.dot(self.W, A_prev) + self.b
+        A = self.activation_func(Z)
+
+        cache = (A_prev, self.W, self.b, Z)
+
+        return A, cache
+
+    def backward(self, dA, cache):
+        """
+        Implement the backward propagation for a single layer.
+
+        Arguments:
+        dA -- post-activation gradient for current layer l 
+        cache -- tuple of values (A_prev, W, b, Z) coming from the forward propagation in the current layer
+
+        Returns:
+        dA_prev -- Gradient of the cost with respect to the activation (of the previous layer l-1), same shape as A_prev
+        dW -- Gradient of the cost with respect to W (current layer l), same shape as W
+        db -- Gradient of the cost with respect to b (current layer l), same shape as b
+        """
+
+        A_prev, W, b, Z = cache
+        m = A_prev.shape[1]
+
+        dZ = dA * self.activation_func(Z, derivative=True)
+        dW = 1./m * np.dot(dZ, A_prev.T)
+        db = 1./m * np.sum(dZ, axis=1, keepdims=True)
+        dA_prev = np.dot(W.T, dZ)
+
+        return dA_prev, dW, db
+
+    def update_parameters(self, dW, db, learning_rate):
+        """
+        Update parameters of the layer by gradient descent
+
+        Arguments:
+        dW -- gradient of the cost with respect to the weights of the layer (W)
+        db -- gradient of the cost with respect to the biases of the layer (b)
+        learning_rate -- learning rate of the gradient descent update rule
+        """
+
+        self.W = self.W - learning_rate * dW
+        self.b = self.b - learning_rate * db

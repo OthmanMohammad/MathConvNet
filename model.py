@@ -45,7 +45,9 @@ class Model:
 
             # Compute cost
             # The cost function is computed as the cross-entropy loss, which is suitable for binary classification tasks.
-            cost = -np.sum(Y * np.log(AL) + (1 - Y) * np.log(1 - AL)) / m
+            epsilon = 1e-8  # Define a small value epsilon
+            cost = -np.sum(Y * np.log(AL + epsilon) + (1 - Y) * np.log(1 - AL + epsilon)) / m
+
 
             # Backward propagation
             grads = self.network.backward(AL - Y, caches)
